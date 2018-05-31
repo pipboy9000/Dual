@@ -1,7 +1,3 @@
-var canvas = document.getElementsByClassName("canvas");
-
-var orientation;
-
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var width = canvas.width;
@@ -14,6 +10,12 @@ var player = {
   vy: 0
 };
 
+var _orientation = {
+  x: 0,
+  y: 0,
+  z: 0
+};
+
 function init() {
   width = window.innerWidth;
   canvas.width = width;
@@ -22,19 +24,29 @@ function init() {
 
   player.x = width / 2;
   player.y = height / 2;
-  console.log(width, height);
-}
 
-if (window.DeviceOrientationEvent) {
-  window.addEventListener("deviceorientation", updateOrientation, false);
+  if (window.DeviceOrientationEvent) {
+    window.addEventListener("deviceorientation", updateOrientation, false);
+  }
+
+  requestAnimationFrame(update);
 }
 
 function updateOrientation(e) {
-  orientation = e;
-  console.log(e.alpha, e.beta, e.gamme, e.absolute);
+  _orientation.x = e.alpha;
+  _orientation.y = e.beta;
+  _orientation.z = e.gamma;
 }
 
 function move() {
+  if (_orientation.x) player.vx += _orientation.z;
+  if (_orientation.y) player.vy += _orientation.y;
+
+  player.vx *= 0.25;
+  player.vy *= 0.25;
+
+  console.log(player);
+
   player.x += player.vx;
   player.y += player.vy;
 }
@@ -43,9 +55,10 @@ function draw() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, width, height);
 
-  ctx.moveTo(player.x, player.y);
-  ctx.arc(player.x, player.y, 50, 0, Math.PI * 2);
+  ctx.beginPath();
+  ctx.arc(player.x, player.y, 25, 0, Math.PI * 2);
   ctx.strokeStyle = "red";
+  ctx.lineWidth = 3;
   ctx.stroke();
 }
 
@@ -56,7 +69,3 @@ function update(dt) {
 }
 
 init();
-
-requestAnimationFrame(update);
-
-IDBCursorWithValue;
