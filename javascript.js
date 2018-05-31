@@ -7,7 +7,9 @@ var player = {
   x: 0,
   y: 0,
   vx: 0,
-  vy: 0
+  vy: 0,
+  size: 20,
+  halfSize: 10
 };
 
 var _orientation = {
@@ -49,6 +51,12 @@ function move() {
 
   player.x += player.vx;
   player.y += player.vy;
+
+  //walls
+  if (player.x > width - player.size) player.x = width - player.size;
+  if (player.x < player.size) player.x = player.size;
+  if (player.y > height - player.size) player.y = height - player.size;
+  if (player.y < player.size) player.y = player.size;
 }
 
 function draw() {
@@ -56,7 +64,7 @@ function draw() {
   ctx.fillRect(0, 0, width, height);
 
   ctx.beginPath();
-  ctx.arc(player.x, player.y, 25, 0, Math.PI * 2);
+  ctx.arc(player.x, player.y, player.size, 0, Math.PI * 2);
   ctx.strokeStyle = "red";
   ctx.lineWidth = 3;
   ctx.stroke();
