@@ -63,7 +63,7 @@ function move(dt) {
 
   if (isCharging || input.mouse.left) {
     charge += 0.25;
-  } else if (charge > 2) {
+  } else if (charge > 5) {
     console.log(charge);
     projectiles.shoot(1, x, y, 1, charge, rotation);
     charge = 0;
