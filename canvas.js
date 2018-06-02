@@ -20,4 +20,4 @@ function clear() {
 
 init();
 
-export default { clear, ctx, width, height };
+export default { clear, canvas, ctx, width, height };
