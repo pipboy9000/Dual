@@ -14,6 +14,7 @@ function init() {
 }
 
 function clear() {
+  // ctx.globalAlpha = 0.2;
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, width, height);
 }

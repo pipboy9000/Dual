@@ -21,7 +21,7 @@ function move(dt) {
         e.age > 100
       ) {
         e.active = false;
-        console.log("done");
+        console.log(projectiles.length);
       }
     }
   });
@@ -30,11 +30,12 @@ function move(dt) {
 function draw() {
   ctx.strokeStyle = "red";
   ctx.lineWidth = 3;
-  ctx.save();
   projectiles.forEach(function(e) {
     if (e.active) {
+      ctx.save();
       ctx.beginPath();
       ctx.translate(e.x, e.y);
+      ctx.arc(0, 0, 10, 0, Math.PI * 2);
       ctx.rotate(e.dir * Math.PI / 180);
       ctx.lineTo(5, 0);
       ctx.lineTo(0, -15);
@@ -47,11 +48,22 @@ function draw() {
 }
 
 function shoot(type, x, y, player, charge, dir) {
+  debugger;
   var proj = projectiles.find(function(e) {
+    console.log(e.active);
     return !e.active;
   });
 
-  if (!proj) {
+  if (proj) {
+    proj.dir = dir;
+    proj.vx = Math.sin(dir / 180 * Math.PI) * charge;
+    proj.vy = Math.cos(dir / 180 * Math.PI) * -charge;
+    proj.x = x;
+    proj.y = y;
+    proj.player = player;
+    proj.active = true;
+    proj.age = 0;
+  } else {
     proj = {
       dir,
       vx: Math.sin(dir / 180 * Math.PI) * charge,
@@ -63,15 +75,6 @@ function shoot(type, x, y, player, charge, dir) {
       age: 0
     };
     projectiles.push(proj);
-  } else {
-    proj.dir = dir;
-    proj.vx = Math.sin(dir / 180 * Math.PI) * charge;
-    proj.vy = Math.cos(dir / 180 * Math.PI) * -charge;
-    proj.x = x;
-    proj.y = y;
-    proj.player = player;
-    proj.active = true;
-    proj.age = 0;
   }
 }
 

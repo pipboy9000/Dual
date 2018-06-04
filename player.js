@@ -29,9 +29,9 @@ function init() {
 }
 
 function draw() {
+  ctx.save();
   ctx.strokeStyle = "red";
   ctx.lineWidth = 3;
-  ctx.save();
   ctx.beginPath();
   ctx.translate(x, y);
   ctx.rotate(rotation * Math.PI / 180);
@@ -62,7 +62,11 @@ function move(dt) {
   if (y < size) y = size;
 
   if (isCharging || input.mouse.left) {
-    charge += 0.25;
+    charge += 1;
+    if (charge > 5) {
+      projectiles.shoot(1, x, y, 1, charge, rotation);
+      charge = 0;
+    }
   } else if (charge > 5) {
     console.log(charge);
     projectiles.shoot(1, x, y, 1, charge, rotation);
